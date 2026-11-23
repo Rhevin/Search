@@ -352,7 +352,8 @@ else
   # A build that cannot sign at all is not a build: `|| true` here let one
   # through as though it had finished, leaving a bundle that would not open.
   # set -e stops it now, with codesign's own words above.
-  codesign --force --deep --sign - "$APP"
+  # fork: hardened runtime on self-built copies too, so other processes can't inject code into it.
+  codesign --force --deep --options runtime --entitlements "$ENTITLEMENTS" --sign - "$APP"
   [ "$STEP" != "app" ] && echo "no Developer ID certificate found — the DMG will only open on this Mac" >&2
 fi
 
