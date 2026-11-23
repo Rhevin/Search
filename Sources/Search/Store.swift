@@ -131,6 +131,9 @@ enum Store {
                 try? files.moveItem(at: old, to: home)
             }
         }
+        // fork: owner-only, so other accounts on this Mac can't read history, tabs or bookmarks.
+        try? FileManager.default.createDirectory(at: home, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
+        try? FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: home.path)
         return home
     }()
 
