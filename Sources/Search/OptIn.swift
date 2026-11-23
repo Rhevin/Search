@@ -75,7 +75,7 @@ enum OptIn {
     /// Whether the card and the welcome offer the field: until an email has
     /// been given once. Closing the card without one changes nothing, so
     /// the next version's card offers it again.
-    static func offered(_ store: UserDefaults = Store.settings) -> Bool { !joined(store) }
+    static func offered(_ store: UserDefaults = Store.settings) -> Bool { false } // fork: never offer the email sign-up
 
     /// After a press the site said yes to: the booleans, and nothing else.
     static func remember(_ list: List, in store: UserDefaults = Store.settings) {
@@ -165,6 +165,9 @@ enum OptIn {
     /// failure waits for the person to press again.
     static func send(email: String, list: List, source: Source, base: URL = OptIn.base, session: URLSession = OptIn.session,
                      done: @escaping (Result<Void, Failure>) -> Void) {
+        // fork: no email ever leaves this Mac, whatever view calls this.
+        DispatchQueue.main.async { done(.failure(.unreachable)) }
+        return
         guard let email = cleaned(email) else { done(.failure(.notAnEmail)); return }
         let request = request(email: email, list: list, source: source, base: base)
         session.dataTask(with: request) { _, response, error in

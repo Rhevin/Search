@@ -115,6 +115,8 @@ final class Updater: ObservableObject {
 
     private var lastKey: String { "update.checked" }
     nonisolated static let installKey = "update.install"
+    /// fork: off. The one switch for the update feed.
+    static let enabled = false
     /// Settings › About › Install updates on its own. On unless switched off.
     private var installsOnItsOwn: Bool { Store.settings.object(forKey: Updater.installKey) as? Bool ?? true }
     /// Where a line goes when there is one to say, handed over at launch.
@@ -166,6 +168,7 @@ final class Updater: ObservableObject {
             return
         default: break
         }
+        guard Updater.enabled else { say?("Updates are off in this build: pull and rebuild from source"); return }
         guard !checking else { return }
         say?("Checking for updates…")
         check { [weak self] found in
@@ -179,7 +182,8 @@ final class Updater: ObservableObject {
     /// names, or nil when this is the latest; what becomes of it after that
     /// is said through the line handed to `checkIfDue`.
     func check(then done: @escaping (Release?) -> Void) {
-        guard !checking else { return }
+        // fork: no update feed, so this build never contacts officecommun.com. Update with git pull + ./build.sh.
+        guard Updater.enabled, !checking else { done(nil); return }
         checking = true
         Task { [weak self] in
             let found = await Updater.fetch()

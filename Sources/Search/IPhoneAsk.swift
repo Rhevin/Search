@@ -25,7 +25,7 @@ import SwiftUI
 
 enum IPhoneAsk {
     /// The one switch for every place.
-    static let on = true
+    static let on = false // fork: no iPhone-beta email prompt
 
     /// "Not now", pressed in any place: never offered again anywhere.
     nonisolated static let dismissedKey = "iphoneask.dismissed"
