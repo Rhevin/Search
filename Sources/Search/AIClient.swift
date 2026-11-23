@@ -175,7 +175,8 @@ final class AIClient: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
                 "generationConfig": ["maxOutputTokens": 2048],
             ]
         }
-        guard allowed(url, for: provider) else { throw AIError.refusedHost }
+        // fork: cloud providers refused; page content only goes to models on this Mac.
+        guard provider.isLocal, allowed(url, for: provider) else { throw AIError.refusedHost }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -199,6 +200,7 @@ final class AIClient: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
     /// OpenRouter's one-time code, and the flow's verifier, for a key of
     /// the account's own (see AISignIn).
     func exchange(code: String, verifier: String) async throws -> String {
+        throw AIError.refusedHost // fork: no OpenRouter sign-in
         let url = AIProvider.openRouter.base.appendingPathComponent("auth/keys")
         guard Self.allowed(url, for: .openRouter) else { throw AIError.refusedHost }
         var request = URLRequest(url: url)

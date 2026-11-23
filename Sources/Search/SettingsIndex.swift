@@ -97,7 +97,6 @@ enum SettingsIndex {
         .init(id: "anywhere", page: .keyboard, title: "From any app", icon: "macwindow.on.rectangle"),
 
         .init(id: "updates", page: .about, title: "Updates", icon: "arrow.triangle.2.circlepath"),
-        .init(id: "news", page: .about, title: "News by email", icon: "envelope.open"),
         .init(id: "developer", page: .about, title: "Developer", icon: "hammer"),
 
         // Drawn by ExtensionsPage itself; here so the find field reaches it.
@@ -639,26 +638,11 @@ enum SettingsIndex {
 
         // About
         .init(id: "updates.version", group: "updates", icon: "arrow.down.app",
-              title: "Updates", detail: "Checked every hour on its own", words: ["version", "update"]),
-        .init(id: "updates.auto", group: "updates", icon: "arrow.triangle.2.circlepath",
-              title: "Install updates on its own", detail: "Off, Search tells you and waits for Install",
-              keys: [Updater.installKey], words: ["automatic updates"]),
+              title: "Updates", detail: "Off in this build: pull and rebuild from source", words: ["version", "update"]),
         .init(id: "about.feedback", group: "updates", icon: "envelope",
               title: "Found something wrong?", detail: "Opens a draft with the version already in it", words: ["bug", "feedback", "report"]),
         .init(id: "about.notes", group: "updates", icon: "sparkles",
               title: "What's new", detail: "Every version's notes, newest first", words: ["release notes", "changelog"]),
-        // An email field each, never sent without a press (OptIn.swift).
-        // Only booleans are kept, never the address.
-        .init(id: "news.updates", group: "news", icon: "envelope",
-              title: "News by email", detail: "Rare emails: useful new features and big updates, nothing else",
-              more: "Your email goes to searchbrowser.app with the word app-settings and which Mac download this is, and through Resend, our email service. Every email has a link to stop them. This Mac remembers only that you joined, never the address.",
-              keys: [OptIn.joinedKey],
-              words: ["newsletter", "email", "mailing list", "subscribe", "news", "updates by email"], kind: .wide),
-        .init(id: "news.iphone", group: "news", icon: "iphone",
-              title: "Search for iPhone beta", detail: "Ask for the iPhone beta, sent to your email",
-              more: "Your email goes to searchbrowser.app with the word app-settings, for your beta access and now and then news about the beta. Every email has a link to stop them. This Mac remembers only that you asked, never the address.",
-              keys: [OptIn.betaKey],
-              words: ["iphone", "ios", "beta", "testflight", "mobile", "phone", "email"], kind: .wide),
         .init(id: "bench", group: "developer", icon: "terminal",
               title: "Let a script drive Search", detail: "A local socket for testing; its tabs never take over",
               more: "Its tabs open beside yours with a flask on them. See ./bench.",

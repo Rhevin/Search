@@ -909,13 +909,10 @@ struct SettingsPanel: View {
         case "launcher.little": Switch(on: $prefs.launcherLittle)
         case "note.switcher": Always()
         case "updates.version": versionControl
-        case "updates.auto": Switch(on: $prefs.installsUpdates)
         case "about.feedback": Pill("Send Feedback") { Links.writeFeedback() }
         case "about.notes": Pill("What's New…") { browser.lead(to: InternalPage(.notes)) }
         case "bench": Switch(on: $prefs.bench)
         case "agents": Switch(on: $prefs.agents)
-        case "news.updates": OptInSettingsField(betaOnly: false) { _ = browser.open($0, foreground: true) }
-        case "news.iphone": OptInSettingsField(betaOnly: true) { _ = browser.open($0, foreground: true) }
         default: EmptyView()
         }
     }
